@@ -1,0 +1,15 @@
+.cell {
+    height: 100px;
+    width: 100px;
+    background-color: #d8eeff;
+    border: solid 1px black;
+}
+.green {
+    background-color: green;
+}
+.red {
+    background-color: red;
+}
+.button {
+    height: 50px;
+}
