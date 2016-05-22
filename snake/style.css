@@ -1,0 +1,36 @@
+#game {
+    width: 400px;
+    height: 400px;
+    border: solid 5px darkblue;
+    padding: 0;
+    margin: 0;
+    float: left;
+    line-height: 10px;
+}
+.cell {
+    display: inline-block;
+    background-color: #ebfaff;
+    width: 20px;
+    height: 20px;
+}
+.snake {
+    width: 18px;
+    height: 18px;
+    background-color: #548046;
+    border: solid 1px #848484;
+    border-radius: 3px;
+}
+.food {
+    width: 18px;
+    height: 18px;
+    background-color: #ff0000;
+    border: solid 1px #848484;
+    border-radius: 10px;
+}
+.black {
+    background-color: #000000;
+    width: 20px;
+    height: 20px;
+    border-radius: 0;
+    border: none;
+}
