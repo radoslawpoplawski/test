@@ -1,96 +1,117 @@
 // Created by Radek on 2016-05-20.
 'use strict';
 
-var $game = $('#app');
-var cpuTurn;
+var gameSpeed = 400;
+var dir = 2;
+var $length;
+var possibleStarts = [[4,4],[10,4],[15,7],[4,14],[6,11]];
+var possibleEnds = [[16,44],[12,24],[15,27],[13,28]];
+var $game = $('#game');
+var metroOnMap = false;
 
 function createBoard() {
-    var $table = $('<table>');
-    var index = 0;
-    for (var i=0; i<3; i++) {
-        var $tr = $('<tr>');
-        $table.append($tr);
-        for (var j=0; j<3; j++) {
-            var $td = $('<td>');
-            $td.addClass('cell').data('cellIndex', index + 1);
-            $tr.append($td);
-            index++;
+    for (var i=1; i<26; i++) {
+        for (var j=1; j<46; j++) {
+            var $div = $('<div>');
+            $game.append($div);
+            $div.addClass('cell').attr('id','cell-'+i+'-'+j);
         }
     }
-    $game.empty().append($table);
+}
+function createControls() {
+    for (var i=1; i<6; i++) {
+        for (var j=1; j<21; j++) {
+            var $div = $('<div>');
+            $('#controls').append($div);
+            $div.addClass('cell').attr('id','controlcell-'+i+'-'+j);
+        }
+    }
+    $('#controlcell-3-3').addClass('railroad');
+    $('#controlcell-3-13').addClass('metro');
 }
 
-function playGame() {
-    $('#button').hide();
-    createBoard();
-    if (cpuTurn === true) { game(false); console.log('Player start a game !');}
-    else if (cpuTurn === false) { game(true); console.log('First player: CPU');}
-    else {game(false); console.log('Player start a game!');}
+function createPlaces() {
+    var startPoint = possibleStarts[Math.round(Math.random()*4)];
+    var endPoint = possibleEnds[Math.round(Math.random()*3)];
+    $('#cell-'+startPoint[0]+'-'+startPoint[1]).addClass('start-point');
+    $('#cell-'+endPoint[0]+'-'+endPoint[1]).addClass('end-point');
+}
+function buildRoads() {
+    $game.off();
+    $game.on('click','.cell', function () {
+        $(this).addClass('railroad');
+    });
+}
+function buildMetro() {
+    $game.off();
+    if (metroOnMap === false) {
+        $game.on('click', '.cell', function () {
+            $(this).addClass('metro');
+            metroOnMap = true;
+        });
+    }
+}
 
-    $game.on('click', 'td:not(.green, .red)', function (event, lastCpu) {
-        lastCpu = lastCpu || false;
-        if ((lastCpu === true) && (cpuTurn === true)) {
-            $(this).addClass('red');
-            checkWin(lastCpu, 'CPU');
-        } else if ((lastCpu === false) && (cpuTurn === false)) {
-            $(this).addClass('green');
-            checkWin(lastCpu, 'player');
+// $('#controls').on('click','div#controlcell-3-3', buildRoads());
+$('#controls').on('click','#controlcell-3-13', buildMetro());
+
+/*function gameplay() {
+    var newx = snake[0][0];
+    var newy = snake[0][1];
+    var $food = $('.food');
+    switch (dir) {
+        case 1:
+            newx -= 1;
+            break;
+        case 2:
+            newy += 1;
+            break;
+        case 3:
+            newx += 1;
+            break;
+        case 4:
+            newy -= 1;
+            break;
+    }
+    if ((newx < 1) || (newy < 1) || (newx > 20) || (newy > 20) || ($('#cell-' + newx + '-' + newy).hasClass('snake'))) {
+        $('.cell').addClass('black');
+    } else if ($food.attr('id') === 'cell-' + newx + '-' + newy) {
+        snake.unshift([newx, newy]);
+        $('#cell-' + newx + '-' + newy).addClass('snake').removeClass('food');
+        if ($length === 399) {
+            setTimeout(function () {$('.cell').removeClass('snake');}, 1000);
         } else {
-            console.log('Now is CPU turn !');
+            createFood();
+            gameSpeed -= 1;
+            setTimeout(function () {gameplay();}, gameSpeed);}
+    } else {
+        var last = snake.pop();
+        snake.unshift([newx,newy]);
+        $('#cell-'+last[0]+'-'+last[1]).removeClass('snake');
+        $('#cell-'+newx+'-'+newy).addClass('snake');
+        setTimeout(function() {gameplay();}, gameSpeed);
+    }
+}
+
+function game() {
+    createBoard();
+    createFood();
+    setTimeout(function() {gameplay();}, gameSpeed);
+    $(document).keydown(function(e){
+        if (e.keyCode == 37) {
+            dir=4;
+        }else if (e.keyCode == 38) {
+            dir=1;
+        }else if (e.keyCode == 39) {
+            dir=2;
+        }else if (e.keyCode == 40) {
+            dir=3;
         }
     });
-}
-
-function game(firstCpu) {
-    cpuTurn = firstCpu;
-    if (firstCpu === true) {
-        var $emptyFields = $('td:not(.green, .red)');
-        setTimeout(function () {
-            $emptyFields.eq(Math.round(Math.random() * ($emptyFields.length - 1))).trigger('click', firstCpu)
-        }, 1000);
-    }
-}
-
-function getIndexes(player) {
-    (player === true) ? (player = '.red') : (player = '.green');
-    return $(player, $game).map(function () {
-        return $(this).data('cellIndex');}
-            ).get();
-}
-
-function compareLines(indexes) {
-    var win = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]];
-    win = win.map(function (a) {
-        return a.map(function(b) {
-            return indexes.some(function(c) {
-                return c === b;})
-            })
-        });
-    win = win.map(function(a) {
-        if ((a[0] === true) && (a[1] === true) && (a[2] === true)) {
-            return a = 1;
-        } else {return a = 0;}
-        });
-    win = win.find(function(a) {
-        return a === 1;
-    });
-    return win;
-}
-
-function checkWin(lastCpu,player) {
-    var number = 9 - $('td:not(.green, .red)').length;
-    if ((number > 4) && (compareLines(getIndexes(lastCpu)) === 1)) {
-        console.log('win by ' + player + ' !');
-        $game.off('click');
-        $('#button').show();
-    } else if (number === 9) {
-        console.log('it\'s a draw');
-        $game.off('click');
-        $('#button').show();
-    } else {game(!(lastCpu));
-    }
-}
+}*/
 
 $(document).ready(function() {
-    $('#button').click(function() {playGame();});
+    createBoard();
+    createPlaces();
+    createControls();
 });
