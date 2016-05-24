@@ -1,0 +1,36 @@
+@import '_zmienne.scss';
+$color-page: #0f0;
+$zmienna: 20px;
+
+.test {
+  color: $color-page;
+}
+p {
+  color: $color-page;
+  padding: 20px;
+}
+
+#app {
+  .game {
+    background-color: $background;
+  }
+}
+
+@mixin mixin1($value){
+  margin: $value - $zmienna;
+  padding: $value;
+}
+
+#app {
+  @include mixin1(10px);
+}
+.game {
+  @extend p;
+  @include mixin1(50px);
+}
+
+@each $animal in snail, lion, shark {
+  #{$animal}-icon {
+  background-image: url('../images/#{$animal}.png');
+}
+}

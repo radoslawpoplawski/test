@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <title>Tytuł strony</title>
 </head>
 <body>
-<div></div>
-kolejny div
-<header>
-tutaj menu główne
-    linki do podstron
-</header>
-<main>
+<form action="">
 
-</main>
-<footer>
-Tutaj stopka
-</footer>
+    <label for="name-field">Podaj imię:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="text" id="name-field" name="user-name" maxlength="4"/>
+<br>
+    <label for="surname-field">Podaj nazwisko:</label>
+    <input type="text" id="surname-field" name="user-surname" maxlength="4" placeholder="max 4 lettters"/>
+    <br>
+    <label for="email-field">Podaj e-mail:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="email" id="email-field" name="user-email" autocomplete="off"/>
+    <br>
+    <label for="color-field">Wskaż kolor:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="color" id="color-field" name="user-color"/>
+    <br>
+    <label for="value-field">Podaj wartość:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="range" min="87.5" max="108" step="0.05" id="value-field" name="user-value"/>
+    <br>
+    <label for="sex-field-m">Men:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="radio" id="sex-field-m" name="user-sex" value="mennn"/>
+    <br>
+    <label for="sex-field-w">Women:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="radio" id="sex-field-w" name="user-sex" value="womennn"/>
+    <br>
+    <label for="agree-field">Akceptuję:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <input type="checkbox" id="agree-field" name="user-agree"/>
+    <br>
+    <input type="file" accept="video/*;capture=camcorder">
+<br><br>
+    <input type="submit" value="Wyślij!"/>
+    &nbsp;&nbsp;&nbsp;
+    <input type="button" value="Klik!"/>
+    &nbsp;&nbsp;&nbsp;
+    <input type="reset" value="Reset!"/>
+
+</form>
+<div id="app"></div>
+<div>
+    <video autoplay controls poster="http://elearningindustry.com/wp-content/uploads/2015/06/7-killer-tips-effective-video-in-elearning.jpg" preload="metadata">
+        <source src="small.mp4" type="video/mp4">
+        <source src="small.3gp" type="video/gp">
+        <p>This browser does not support the video element.</p>
+    </video><br>
+<audio autoplay controls>
+    <source src="music.mp3" type="audio/mp3">
+    <p>This browser does not suppoer the audio element.</p>
+</audio><br>
+    <canvas>
+
+    </canvas>
+</div>
+<script src="jquery-2.2.4.min.js"></script>
+<script src="main.js"></script>
 </body>
 </html>

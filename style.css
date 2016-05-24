@@ -1,0 +1,29 @@
+input[type="submit"] {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+}
+
+input[type="reset"] {
+     background-color: blue;
+     color: white;
+     border: none;
+     border-radius: 10px;
+     height: 30px;
+     width: 50px;
+ }
+
+input[type="button"] {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+}
+canvas {
+    background-color: yellow;
+}

@@ -1,0 +1,88 @@
+header {
+    height: 100px;
+    background-color: yellow;
+    text-align: center;
+    padding: 10px;
+}
+.menu>.red {
+    background-color: red;
+}
+.menu>.green {
+    background-color: green;
+}
+.menu>.blue {
+    background-color: blue;
+}
+.menu-list>.red {
+    background-color: #ff5854;
+}
+.menu-list>.green {
+    background-color: #428037;
+}
+.menu-list>.blue {
+    background-color: #696fff;
+}
+
+.menu {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    z-index: 2;
+
+}
+.menu-box:hover > .menu-list {
+    visibility: visible;
+}
+
+.menu-list {
+    visibility: hidden;
+    width: 200px;
+    display: block;
+    position: absolute;
+    transition: visibility 0.2s;
+}
+.down {
+    top: 55px;
+}
+.left {
+    right: 205px;
+}
+.right {
+    left: 205px;
+}
+.menu-box {
+    display: inline-block;
+    width: 200px;
+    height: 50px;
+    border: solid 1px black;
+}
+
+input[type="submit"] {
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+}
+
+input[type="reset"] {
+    background-color: blue;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+}
+
+input[type="button"] {
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    height: 30px;
+    width: 50px;
+}
+canvas {
+    background-color: yellow;
+}
