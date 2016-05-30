@@ -36,13 +36,17 @@ function createBoard() {
 function createPlaces() {
     var possibleStarts = [243,443,564];
     wayPoints = [330,373,452,572,689,616];
+    var numberPassangers = [10,15,20,25,30];
     var possibleEnds = [541,623];
     positionStart = possibleStarts[Math.round(Math.random() * 2)];
     positionEnd = possibleEnds[Math.round(Math.random())];
     delete wayPoints[Math.round(Math.random() * 4)];
     $('td', $game).eq(positionStart).addClass('start');
     $('td', $game).eq(positionEnd).addClass('end');
-    wayPoints.forEach(function(a) {$('td', $game).eq(a).addClass('waypoint');});
+    wayPoints.forEach(function(a) {
+        $('td', $game).eq(a).addClass('waypoint');
+        $('td', $game).eq(a).text(numberPassangers[Math.round(Math.random() * 4)]);
+    });
 }
 
 function createMenu() {
@@ -109,6 +113,10 @@ function buildRail(railPosition) {
         });
     } else {
         $game.on('click', 'td:not(.start,.waypoint,.end)', function () {
+           /* if ($(this).hasClass === 'white') {
+
+
+            }*/
             $(this).removeClass().addClass('cell');
             var indexRemovedCell = route.indexOf($(this).data('cellindex'));
             delete route[indexRemovedCell];
