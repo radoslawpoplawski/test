@@ -98,7 +98,7 @@ function buildRail(railPosition) {
         $('.build').css({
             'display': 'block',
             'backgroundImage': 'url(images/rail_'+railPosition+'.png',
-            'top': y-15+'px',
+            'top': y-15+window.pageYOffset+'px',
             'left': x-15+'px'}
         );
     });
@@ -157,6 +157,7 @@ function findNextVerticaly(lastPlace) {
     if (route.some(function(a) {return (lastPlace-40 === a);})) {  // find new track on top side
         if ($('td', $game).eq(lastPlace-40).hasClass('rail_v')) {
             newPosition = lastPlace-40;
+            $game.data('newDirection','v');
             return true;
         } else if (($('td', $game).eq(lastPlace-40).hasClass('rail_t1')) || ($('td', $game).eq(lastPlace-40).hasClass('rail_t2'))) {
             newPosition = lastPlace-40;
@@ -171,6 +172,7 @@ function findNextVerticaly(lastPlace) {
     if (route.some(function(a) {return (lastPlace+40 === a);})) {  // find new track on bottom side
         if ($('td', $game).eq(lastPlace+40).hasClass('rail_v')) {
             newPosition = lastPlace+40;
+            $game.data('newDirection','v');
             return true;
         } else if (($('td', $game).eq(lastPlace+40).hasClass('rail_t3')) || ($('td', $game).eq(lastPlace+40).hasClass('rail_t4'))) {
             newPosition = lastPlace+40;
@@ -189,6 +191,7 @@ function findNextHorizontaly(lastPlace) {
     if (route.some(function(a) {return (lastPlace+1 === a);})) {  // find new track on right side
         if ($('td', $game).eq(lastPlace+1).hasClass('rail_h')) {
             newPosition = lastPlace+1;
+            $game.data('newDirection','h');
             return true;
         } else if (($('td', $game).eq(lastPlace+1).hasClass('rail_t1')) || ($('td', $game).eq(lastPlace+1).hasClass('rail_t3'))) {
             newPosition = lastPlace+1;
@@ -203,6 +206,7 @@ function findNextHorizontaly(lastPlace) {
     if (route.some(function(a) {return (lastPlace-1 === a);})) {  // find new track on left side
         if ($('td', $game).eq(lastPlace-1).hasClass('rail_h')) {
             newPosition = lastPlace-1;
+            $game.data('newDirection','h');
             return true;
         } else if (($('td', $game).eq(lastPlace-1).hasClass('rail_t2')) || ($('td', $game).eq(lastPlace-1).hasClass('rail_t4'))) {
             newPosition = lastPlace-1;
