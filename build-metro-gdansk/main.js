@@ -5,10 +5,11 @@
 var $game = $('#game');
 var $menu = $('#menu');
 var positionStart = 0;
+var score = 0;
+var counter = 30;
 var positionEnd, wayPoints, lastPosition, newPosition, last;
 var route = [];
 var routeFixed = [];
-var score = 0;
 
 function createBoard() {
     var $table = $('<table>');
@@ -30,8 +31,8 @@ function createBoard() {
     $('div', $game).eq(0).addClass('playButton').append($('<button>'));
     $('div', $game).eq(1).addClass('info');
     if (positionStart === 0) {
-        $('button', 'div.playButton').text('Rozpocznij grę!');
-    } else {$('button','div.playButton').text('Rozpocznij przejazd !');}
+        $('button').text('Rozpocznij grę!');
+    } else {$('button').text('Rozpocznij przejazd !');}
 }
 
 function createPlaces() {
@@ -73,6 +74,8 @@ function createMenu() {
     $('td', $menu).eq(104).addClass('rail_t3');
     $('td', $menu).eq(109).addClass('rail_t4');
     $('td', $menu).eq(114).addClass('buldoze');
+    $menu.append($('<div>'));
+    $('div', $menu).addClass('menu-counter').text('Pozostało torów do użycia: '+counter);
 }
 function onEscKey() {
     $(document).keydown(function(e) {
@@ -103,63 +106,68 @@ function createInfo() {
 function buildRail(railPosition) {
     $game.off();
     $(document).mousemove(function() {
-        var x=event.x;
-        var y=event.y;
+        var x=event.x+window.pageXOffset-15;
+        var y=event.y+window.pageYOffset-15;
         $('.build').css({
             'display': 'block',
-            'backgroundImage': 'url(images/rail_'+railPosition+'.png',
-            'top': y-15+window.pageYOffset+'px',
-            'left': x-15+'px'}
+            'backgroundImage': 'url(images/rail_'+railPosition+'.png)',
+            'top': y+'px',
+            'left': x+'px'}
         );
     });
     if (railPosition !== 'bz') {
+        if (counter > 0) {
         $game.on('click', 'td:not(.start,.end,.waypoint,.rail_h, .rail_v, .rail_t1, .rail_t2, .rail_t3, .rail_t4)', function () {
             $(this).addClass('rail_' + railPosition);
             route.push($(this).data('cellindex'));
+            counter = counter - 1;
+            $('div', $menu).addClass('menu-counter').text('Pozostało torów do użycia: ' + counter);
+            if (counter === 0) {$game.off();}
         });
+        }
     } else {
         $game.on('click', 'td:not(.start,.waypoint,.end)', function () {
-
             $(this).removeClass().addClass('cell');
             var indexRemovedCell = route.indexOf($(this).data('cellindex'));
             delete route[indexRemovedCell];
+            counter = counter + 1;
+            $('div', $menu).addClass('menu-counter').text('Pozostało torów do użycia: '+counter);
         });
     }
 
 }
 
-//TODO usun td znaczniki
 function onClicks() {
-    $menu.on('click','td.rail_v', function() {
+    $menu.on('click','.rail_v', function() {
         buildRail('v');
     });
-    $menu.on('click','td.rail_h', function() {
+    $menu.on('click','.rail_h', function() {
         buildRail('h');
     });
-    $menu.on('click','td.rail_t1', function() {
+    $menu.on('click','.rail_t1', function() {
         buildRail('t1');
     });
-    $menu.on('click','td.rail_t2', function() {
+    $menu.on('click','.rail_t2', function() {
         buildRail('t2');
     });
-    $menu.on('click','td.rail_t3', function() {
+    $menu.on('click','.rail_t3', function() {
         buildRail('t3');
     });
-    $menu.on('click','td.rail_t4', function() {
+    $menu.on('click','.rail_t4', function() {
         buildRail('t4');
     });
-    $menu.on('click','td.buldoze', function() {
+    $menu.on('click','.buldoze', function() {
         buildRail('bz');
     });
-    $('div.playButton').off();
-    $('div.playButton').on('click','button', function() {
+    $('.playButton').off();
+    $('.playButton').on('click','button', function() {
         $(document).off('mousemove');
         $game.off();
         $menu.off();
         $('.build').css({'display': 'none'});
         $(this).css({'display': 'none'});
-        $('div.info').css({'display': 'block'});
-        $('div.info-box1').css({'backgroundImage': 'url(images/loading.gif)'});
+        $('.info').css({'display': 'block'});
+        $('.info-box1').css({'backgroundImage': 'url(images/loading.gif)'});
         createInfo();
         wayPoints.forEach(function(a) {route.push(a);});
         route.push(positionEnd);
@@ -250,7 +258,7 @@ function findNextTrack(lastPlace) {
 }
 
 function winner() {
-    $('div.playButton').off();
+    $('.playButton').off();
     $('td', $game).eq(positionStart).addClass('metro');
     routeFixed.pop();
     moveMetro();
@@ -263,20 +271,21 @@ function moveMetro() {
         last = routeFixed.pop();
         $('td', $game).eq(last).addClass('metro');
         if ($('td', $game).eq(last).hasClass('waypoint')) {
+            if ($('td', $game).eq(last).hasClass('brown')) {score+=2;}
             if ($('td', $game).eq(last).hasClass('red')) {score+=5;}
-            if ($('td', $game).eq(last).hasClass('blue')) {score+=5;}
-            if ($('td', $game).eq(last).hasClass('brown')) {score+=5;}
-            if ($('td', $game).eq(last).hasClass('green')) {score+=5;}
-            if ($('td', $game).eq(last).hasClass('yellow')) {score+=5;}
+            if ($('td', $game).eq(last).hasClass('yellow')) {score+=10;}
+            if ($('td', $game).eq(last).hasClass('green')) {score+=12;}
+            if ($('td', $game).eq(last).hasClass('blue')) {score+=15;}
         }
         $('.info-box3').text('Twój wynik: '+score);
         if (last == positionEnd) {
-            $('div.info-box2').text('Przejazd OK !').css({'backgroundImage': 'url(images/check.png)'});
-            $('button', 'div.playButton').text('Zagraj ponownie !').css({'display': 'block'});
-            $('div.playButton').on('click', 'button', function () {
+            $('.info-box2').text('Przejazd OK !').css({'backgroundImage': 'url(images/check.png)'});
+            $('button').text('Zagraj ponownie !').css({'display': 'block'});
+            $('.playButton').on('click', 'button', function () {
                 route = [];
                 routeFixed= [];
                 score = 0;
+                counter = 30;
                 last = false;
                 lastPosition = false;
                 createBoard();
@@ -304,16 +313,16 @@ function fixRoute() {
         if ($('td', $game).eq(lastPosition).hasClass('end')) {
             console.log(routeFixed);
             setTimeout(function() {
-                $('div.info-box1').text('Trasa OK !').css({'backgroundImage': 'url(images/check.png)'});
-                $('div.info-box2').css({'display':'flex'});
-                $('div.info-box3').css({'display':'flex'});
+                $('.info-box1').text('Trasa OK !').css({'backgroundImage': 'url(images/check.png)'});
+                $('.info-box2').css({'display':'flex'});
+                $('.info-box3').css({'display':'flex'});
                 winner();
             },1000);
         } else {
             console.log(routeFixed);
             setTimeout(function() {
-                $('div.info-box1').text('Błąd').css({'backgroundImage': 'url(images/no.png)'});
-                $('button', 'div.playButton').text('Popraw trasę i spróbuj ponownie').css({'display':'block'});
+                $('.info-box1').text('Błąd').css({'backgroundImage': 'url(images/no.png)'});
+                $('button').text('Popraw trasę i spróbuj ponownie').css({'display':'block'});
                 onClicks();
             },1000);
         }
@@ -323,7 +332,7 @@ function fixRoute() {
 /* game starts here */
 
 createBoard();
-$('div.playButton').on('click','button', function() {
+$('.playButton').on('click','button', function() {
     $(this).text('Rozpocznij przejazd !');
     $menu.css({'visibility': 'visible'});
     createMenu();

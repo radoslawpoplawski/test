@@ -14,6 +14,7 @@
     margin: 10px;
 }
 #menu {
+    position: relative;
     visibility: hidden;
     width: 800px;
     height: 200px;
@@ -96,7 +97,7 @@ button {
     align-items: center;
 }
 .info-box3 {
-    justify-content: flex-start;
+    justify-content: center;
     background-image: none;
 }
 div {
@@ -120,4 +121,9 @@ div {
 .metro {
     background-color: black;
     background-image: none;
+}
+.menu-counter {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
 }
