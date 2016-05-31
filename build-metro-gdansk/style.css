@@ -31,9 +31,6 @@ table {
 .start {
     background-image: url(images/start.png);
 }
-.waypoint {
-    background-image: url(images/waypoint.png);
-}
 .end {
     background-image: url(images/finish.png);
 }
@@ -85,10 +82,10 @@ button {
     right: 50px;
     z-index: 2;
     width: 200px;
-    height: 100px;
-    display: none;
+    height: 150px;
+   // display: none;
 }
-.info-box1, .info-box2 {
+.info-box1, .info-box2, .info-box3 {
     height: 50px;
     background-image: url(images/loading.gif);
     background-repeat: no-repeat;
@@ -98,6 +95,29 @@ button {
     justify-content: flex-end;
     align-items: center;
 }
+.info-box3 {
+    justify-content: flex-start;
+    background-image: none;
+}
 div {
     font-family: Arial, sans-serif;
+}
+.red{
+    background-color: red;
+}
+.blue {
+    background-color: blue;
+}
+.brown {
+    background-color: brown;
+}
+.green {
+    background-color: green;
+}
+.yellow {
+    background-color: yellow;
+}
+.metro {
+    background-color: black;
+    background-image: none;
 }

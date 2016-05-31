@@ -5,9 +5,10 @@
 var $game = $('#game');
 var $menu = $('#menu');
 var positionStart = 0;
-var positionEnd, wayPoints, lastPosition, newPosition;
+var positionEnd, wayPoints, lastPosition, newPosition, last;
 var route = [];
 var routeFixed = [];
+var score = 0;
 
 function createBoard() {
     var $table = $('<table>');
@@ -35,17 +36,19 @@ function createBoard() {
 
 function createPlaces() {
     var possibleStarts = [243,443,564];
-    wayPoints = [330,373,452,572,689,616];
-    var numberPassangers = [10,15,20,25,30];
+    wayPoints = [330,373,417,452,489,572,689,694,776,616];
+    var waypointsColors = ['red','blue','brown','green','yellow'];
     var possibleEnds = [541,623];
     positionStart = possibleStarts[Math.round(Math.random() * 2)];
     positionEnd = possibleEnds[Math.round(Math.random())];
-    delete wayPoints[Math.round(Math.random() * 4)];
+    delete wayPoints[Math.round(Math.random() * 8)];
+    delete wayPoints[Math.round(Math.random() * 8)];
     $('td', $game).eq(positionStart).addClass('start');
     $('td', $game).eq(positionEnd).addClass('end');
     wayPoints.forEach(function(a) {
         $('td', $game).eq(a).addClass('waypoint');
-        $('td', $game).eq(a).text(numberPassangers[Math.round(Math.random() * 4)]);
+        var waypointColor = waypointsColors[Math.round(Math.random() * 4)];
+        $('td', $game).eq(a).addClass(waypointColor);
     });
 }
 
@@ -85,11 +88,14 @@ function onEscKey() {
 
 function createInfo() {
     var $info = $('div.info');
-    for (var i=0; i<2; i++) {
+    for (var i=0; i<3; i++) {
         $info.append($('<div>'));
     }
     $('div', $info).eq(0).addClass('info-box1').text('Sprawdzanie trasy... ');
     $('div', $info).eq(1).addClass('info-box2').text('Przejazd metra...').css({
+       'display': 'none'
+    });
+    $('div', $info).eq(2).addClass('info-box3').text('Twój wynik: '+score).css({
         'display': 'none'
     });
 }
@@ -113,10 +119,7 @@ function buildRail(railPosition) {
         });
     } else {
         $game.on('click', 'td:not(.start,.waypoint,.end)', function () {
-           /* if ($(this).hasClass === 'white') {
 
-
-            }*/
             $(this).removeClass().addClass('cell');
             var indexRemovedCell = route.indexOf($(this).data('cellindex'));
             delete route[indexRemovedCell];
@@ -124,6 +127,8 @@ function buildRail(railPosition) {
     }
 
 }
+
+//TODO usun td znaczniki
 function onClicks() {
     $menu.on('click','td.rail_v', function() {
         buildRail('v');
@@ -163,15 +168,15 @@ function onClicks() {
 }
 function findNextVerticaly(lastPlace) {
     if (route.some(function(a) {return (lastPlace-40 === a);})) {  // find new track on top side
-        if ($('td', $game).eq(lastPlace-40).hasClass('rail_v')) {
-            newPosition = lastPlace-40;
-            $game.data('newDirection','v');
+        if ($('td', $game).eq(lastPlace - 40).hasClass('rail_v')) {
+            newPosition = lastPlace - 40;
+            $game.data('newDirection', 'v');
             return true;
-        } else if (($('td', $game).eq(lastPlace-40).hasClass('rail_t1')) || ($('td', $game).eq(lastPlace-40).hasClass('rail_t2'))) {
-            newPosition = lastPlace-40;
-            $game.data('newDirection','h');
+        } else if (($('td', $game).eq(lastPlace - 40).hasClass('rail_t1')) || ($('td', $game).eq(lastPlace - 40).hasClass('rail_t2'))) {
+            newPosition = lastPlace - 40;
+            $game.data('newDirection', 'h');
             return true;
-        } else if (($('td', $game).eq(lastPlace-40).hasClass('waypoint')) || ($('td', $game).eq(lastPlace-40).hasClass('end'))) {
+        }  else if (($('td', $game).eq(lastPlace-40).hasClass('waypoint')) || ($('td', $game).eq(lastPlace-40).hasClass('end'))) {
             newPosition = lastPlace-40;
             $game.data('newDirection','');
             return true;
@@ -186,7 +191,7 @@ function findNextVerticaly(lastPlace) {
             newPosition = lastPlace+40;
             $game.data('newDirection','h');
             return true;
-        } else if (($('td', $game).eq(lastPlace+40).hasClass('waypoint')) || ($('td', $game).eq(lastPlace+40).hasClass('end'))) {
+        }  else if (($('td', $game).eq(lastPlace+40).hasClass('waypoint')) || ($('td', $game).eq(lastPlace+40).hasClass('end'))) {
             newPosition = lastPlace+40;
             $game.data('newDirection','');
             return true;
@@ -231,7 +236,7 @@ function findNextHorizontaly(lastPlace) {
 
 function findNextTrack(lastPlace) {
     if ($('td', $game).eq(lastPlace).hasClass('end')) {
-        routeFixed.push(lastPlace);
+        routeFixed.unshift(lastPlace);
         return false;
     } else if ($game.data('newDirection') === 'v') {
         return findNextVerticaly(lastPlace);
@@ -244,28 +249,53 @@ function findNextTrack(lastPlace) {
     }
 }
 
+function winner() {
+    $('div.playButton').off();
+    $('td', $game).eq(positionStart).addClass('metro');
+    routeFixed.pop();
+    moveMetro();
+}
+
 function moveMetro() {
     setTimeout(function() {
-        $('div.info-box2').text('Przejazd OK !').css({'backgroundImage': 'url(images/check.png)'});
-        $('button', 'div.playButton').text('Zagraj ponownie !').css({'display': 'block'});
-        $('div.playButton').on('click','button', function() {
-            createBoard();
-            createMenu();
-            createPlaces();
-            onEscKey();
-            onClicks();
-            route = [];
-            routeFixed = [];
-            lastPosition = false;
-        });
-    },2000);
-    $('div.playButton').off();
+        last = last || positionStart;
+        $('td', $game).eq(last).removeClass('metro');
+        last = routeFixed.pop();
+        $('td', $game).eq(last).addClass('metro');
+        if ($('td', $game).eq(last).hasClass('waypoint')) {
+            if ($('td', $game).eq(last).hasClass('red')) {score+=5;}
+            if ($('td', $game).eq(last).hasClass('blue')) {score+=5;}
+            if ($('td', $game).eq(last).hasClass('brown')) {score+=5;}
+            if ($('td', $game).eq(last).hasClass('green')) {score+=5;}
+            if ($('td', $game).eq(last).hasClass('yellow')) {score+=5;}
+        }
+        $('.info-box3').text('Twój wynik: '+score);
+        if (last == positionEnd) {
+            $('div.info-box2').text('Przejazd OK !').css({'backgroundImage': 'url(images/check.png)'});
+            $('button', 'div.playButton').text('Zagraj ponownie !').css({'display': 'block'});
+            $('div.playButton').on('click', 'button', function () {
+                route = [];
+                routeFixed= [];
+                score = 0;
+                last = false;
+                lastPosition = false;
+                createBoard();
+                createMenu();
+                createPlaces();
+                onEscKey();
+                onClicks();
+            });
+        } else {
+            moveMetro();
+        }
+    },300);
+
 }
 
 function fixRoute() {
     lastPosition = lastPosition || positionStart;
     if (findNextTrack(lastPosition) === true) {
-        routeFixed.push(lastPosition);
+        routeFixed.unshift(lastPosition);
         lastPosition = newPosition;
         var indexOfItem = route.indexOf(newPosition);
         delete route[indexOfItem];
@@ -276,7 +306,8 @@ function fixRoute() {
             setTimeout(function() {
                 $('div.info-box1').text('Trasa OK !').css({'backgroundImage': 'url(images/check.png)'});
                 $('div.info-box2').css({'display':'flex'});
-                moveMetro();
+                $('div.info-box3').css({'display':'flex'});
+                winner();
             },1000);
         } else {
             console.log(routeFixed);
