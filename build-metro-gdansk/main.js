@@ -74,6 +74,16 @@ function createMenu() {
     $('td', $menu).eq(104).addClass('rail_t3');
     $('td', $menu).eq(109).addClass('rail_t4');
     $('td', $menu).eq(114).addClass('buldoze');
+    $('td', $menu).eq(204).addClass('brown');
+    $('td', $menu).eq(205).text('2');
+    $('td', $menu).eq(210).addClass('red');
+    $('td', $menu).eq(211).text('5');
+    $('td', $menu).eq(216).addClass('yellow');
+    $('td', $menu).eq(217).text('10');
+    $('td', $menu).eq(222).addClass('green');
+    $('td', $menu).eq(223).text('12');
+    $('td', $menu).eq(228).addClass('blue');
+    $('td', $menu).eq(229).text('15');
     $menu.append($('<div>'));
     $('div', $menu).addClass('menu-counter').text('Pozostało torów do użycia: '+counter);
 }

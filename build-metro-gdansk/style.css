@@ -28,6 +28,7 @@ table {
     width: 20px;
     height: 20px;
     padding: 0;
+    text-align: right;
 }
 .start {
     background-image: url(images/start.png);
