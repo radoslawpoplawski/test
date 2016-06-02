@@ -5,20 +5,32 @@ peer.on('open', function(id) {
     $('#myId').val(id);
 });
 
+function estabilishedConnection(connection){
+    console.log('działa');
+    connection.on('open', function() {
+
+        // receive data
+        connection.on('data', function(data) {
+            if (data.type == 'message') {console.log('Received:', data.text);}
+            if (data.type == 'hide') {$('#'+data.text).hide()}
+        });
+
+        // send data
+        $('#but2').click(function() {
+            connection.send({type: 'message',text: $('#myMessage').val()});
+        });
+        $('.gamecard').click(function() {
+            connection.send({type: 'hide',text: $(this).attr('id')});
+            $(this).hide();
+        });
+    });
+}
+
 $('#but1').click(function() {
     conn = peer.connect($('#rid').val());
     estabilishedConnection(conn);
 });
 
-function estabilishedConnection(connection){
-    console.log('działa');
-    connection.on('open', function() {
-        connection.on('data', function(data) {console.log('Received', data);});
-        $('#but2').click(function() {
-            connection.send($('#myMessage').val());
-        });
-    });
-}
 peer.on('connection', function(conn) {
     estabilishedConnection(conn);
 });
