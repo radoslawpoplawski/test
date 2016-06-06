@@ -1,0 +1,62 @@
+.gamecard {
+    width: 50px;
+    height: 100px;
+    margin: 10px;
+    background-color: #d8eeff;
+    border-radius: 10px;
+}
+.cards {
+    display: flex;
+}
+.backcard {
+    background-color: #848484;
+}
+.row3 {
+    background-color: red;
+    height: 120px;
+  }
+.row2 {
+      background-color: green;
+    height: 120px;
+  }
+.row1 {
+      background-color: #add5ff;
+    height: 120px;
+  }
+.row0 {
+    background-color: #faba8c;
+    height: 70px;
+}
+.stone {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    margin: 10px;
+    text-align: center;
+}
+.sapphire {
+    background-color: #5173ff;
+}
+.onyx {
+    background-color: #390f17;
+}
+.ruby {
+    background-color: #ff1c36;
+}
+.emerald {
+    background-color: #6cc039;
+}
+.diamond {
+    background-color: #f5f8ff;
+}
+.gold {
+    background-color: #fffd54;
+}
+.player-row {
+    height: 120px;
+    background-color: #6cc039;
+}
+.player-row2 {
+    height: 70px;
+    background-color: rgb(255, 215, 237);
+}
