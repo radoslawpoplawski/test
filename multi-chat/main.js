@@ -9,20 +9,33 @@ function estabilishedConnection(connection){
     console.log('działa');
     connection.on('open', function() {
 
+        // close conenction
+        $('#but2').click(function() {
+            connection.close();
+        });
+
         // receive data
         connection.on('data', function(data) {
             if (data.type == 'message') {console.log('Received:', data.text);}
-            if (data.type == 'hide') {$('#'+data.text).hide()}
+            else {eval("$('#'+data.text).addClass(data.type)");}
         });
 
         // send data
-        $('#but2').click(function() {
-            connection.send({type: 'message',text: $('#myMessage').val()});
+        $('#but3').click(function() {
+            var msg = {type: 'message',text: $('#myMessage').val()};
+            connection.send(msg);
+            console.log('Send:', msg.text);
         });
         $('.gamecard').click(function() {
             connection.send({type: 'hide',text: $(this).attr('id')});
-            $(this).hide();
+            $(this).addClass('hide');
         });
+
+        // on disconnect
+        connection.on('close', function() {
+            console.log('disconnect');
+        });
+
     });
 }
 

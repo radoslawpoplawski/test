@@ -113,7 +113,7 @@ function onClickStone() {
                 $(this).text($(this).data('value'));
             }
         } else {
-            $(this).removeClass('stone '+stoneType).attr('id','');
+            $(this).remove();
         }
         if ($(this).parent().hasClass('row0')) {
             addStone($player2,stoneId,stoneType);

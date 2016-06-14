@@ -1,9 +1,23 @@
 .gamecard {
     width: 50px;
     height: 100px;
-    background-color: lightskyblue;
     margin: 10px;
+}
+.nr1 {
+    background-color: lightskyblue;
+}
+.nr2 {
+    background-color: #f2fa49;
+}
+.nr3 {
+    background-color: #c150fa;
+}
+.nr4 {
+    background-color: #33fa27;
 }
 #gameboard {
     display: flex;
+}
+.hide {
+    display: none;
 }
