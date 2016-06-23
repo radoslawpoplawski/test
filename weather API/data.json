@@ -1,0 +1,41 @@
+{
+  "coord": {
+    "lon": 18.65,
+    "lat": 54.35
+  },
+  "weather": [
+    {
+      "id": 802,
+      "main": "Clouds",
+      "description": "scattered clouds",
+      "icon": "03d"
+    }
+  ],
+  "base": "cmc stations",
+  "main": {
+    "temp": 26.11,
+    "pressure": 1022,
+    "humidity": 19,
+    "temp_min": 26.11,
+    "temp_max": 26.11
+  },
+  "wind": {
+    "speed": 2.66,
+    "deg": 82.5013
+  },
+  "clouds": {
+    "all": 44
+  },
+  "dt": 1466610686,
+  "sys": {
+    "type": 3,
+    "id": 10061,
+    "message": 0.0147,
+    "country": "PL",
+    "sunrise": 1466561460,
+    "sunset": 1466623450
+  },
+  "id": 3099434,
+  "name": "Gdansk",
+  "cod": 200
+}
