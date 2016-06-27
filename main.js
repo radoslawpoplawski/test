@@ -1,4 +1,17 @@
 'use strict';
+$(function() {
+    // $( "#sortable" ).sortable();
+    $( "#drag" ).draggable();
+    $('#dupa').droppable({
+        activeClass: "ui-state-hover",
+        hoverClass: "ui-state-active",
+        tolerance: "fit",
+        drop: function(event, ui){
+            alert('aaa');
+        }
+    });
+});
+
 
 $('form').on('submit', function(event) {
     event.preventDefault();
@@ -13,6 +26,7 @@ $('form').on('reset', function() {
 
 /*https://coderwall.com/p/vsdrug/how-to-create-an-image-slider-with-javascript*/
 
+/*
 var ul;
 var li_items;
 var li_number;
@@ -84,4 +98,4 @@ function animate(opts){
         }
     }, opts.dalay || 17);
 }
-window.onload = init;
+window.onload = init;*/

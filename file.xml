@@ -1,0 +1,9 @@
+<course>
+    <students count="16">
+        <student>
+            <name>
+                <first value="imie"/>
+            </name>
+        </student>
+    </students>
+</course>

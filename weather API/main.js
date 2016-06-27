@@ -10,6 +10,7 @@ $(document).ready(function () {
 
         $.ajax(options)
             .done(function (result) {
+                console.log(JSON.stringify(result));
                 showResponse(result);
             })
             .fail(function (error) {

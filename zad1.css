@@ -82,3 +82,21 @@ header {
     float:left;
     list-style: none;
 }
+body {
+    float: left;
+}
+.card {
+    background-color: #6cc039;
+    border: 4px dashed transparent;
+}
+.card { margin: 10px; padding: 1px; float: left; width: 180px; height: 220px; font-size: 4em; text-align: center; }
+.cardplace {
+    border: 4px dashed black;
+    width: 200px;
+    height: 240px;
+}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 100%; }
+
+
+#draggable, #draggable2, #draggable3 { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+#droppable { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px; }

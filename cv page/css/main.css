@@ -1,17 +1,24 @@
 body {
     margin: 10px;
-    background-color: #ede9f8;
+    background-color: #edede2;
     font-family: arial, sans-serif;
 }
 a:hover, a:visited, a:active, a:link {
     color: black;
 }
+.navbar > .links {
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+}
 .photo {
+    margin: 0 auto;
     width: 200px;
     height: 200px;
     border-radius: 50%;
     background-image: url(../images/photo.jpg);
     background-position: center;
+    background-size: contain;
     z-index: 99;
     box-shadow: 3px 3px 6px black;
 }
@@ -69,7 +76,7 @@ a:hover, a:visited, a:active, a:link {
     margin: 10px 0 10px;
     width: 100%;
     height: 50px;
-    background-color: #eeeeee;
+    background-color: #edede2;
     border-radius: 5px;
     border: 1px solid black;
     overflow: hidden;
@@ -117,7 +124,7 @@ td:first-child{
     display: none;
 }
 
-@media screen and (min-width: 10px)/*, screen and (-webkit-device-pixel-ratio: 1.5) and (min-width: 400px)*/ {
+@media screen and (min-width: 640px), screen and (-webkit-device-pixel-ratio: 1.5) and (min-width: 450px) {
     .small {
         display: none;
     }
@@ -125,8 +132,9 @@ td:first-child{
         margin: 0 0 20px;
     }
     .navbar {
+        padding: 0;
         height: 150px;
-        background-color: deepskyblue;
+        background-color: #24c92d;
         position: absolute;
         top: 0;
         left: 0;
@@ -140,24 +148,21 @@ td:first-child{
         height: 450px;
     }
     .circle1{
-        margin: 0 auto;
         display: block;
-        position: relative;
+        position: absolute;
+        left: 40%;
         width: 350px;
         height: 300px;
         background-image: url(../images/circle.png);
         background-size: 100% 100%;
         z-index: 2;
-        transition: transform 3s;
+        transition: transform 3s, left 3s;
     }
     .navbar .photo {
         display: inline-block;
-        width: 200px;
-        height: 200px;
         position: absolute;
         top: 20px;
         left: 50px;
-        background-size: contain;
     }
     .fa-envelope-o:hover > #tooltip-e {
         display: block;
@@ -173,7 +178,7 @@ td:first-child{
         float: right;
     }
     .links i {
-        padding: 40px;
+        padding: 20px 40px 20px;
     }
     #insideCircle {
         transition: transform 3s;
